@@ -5,9 +5,12 @@ from heapq import *
 def dijkstra(A, start):
     d = [float('+inf') for v in A]
     d[start] = 0
+    way[start] = [0]
     Q = [(start, 0)]
     visited = set()
-    while len(visited) != n:
+    min_dist = 0
+    min_v = start
+    while min_dist < float('inf'):
         current, d_c = heappop(Q)
         if d_c != d[current]:
             continue
@@ -15,9 +18,16 @@ def dijkstra(A, start):
             l = d_c + neighbour[1]
             if l < d[neighbour[0]]:
                 d[neighbour[0]] = l
+                way[current].append(neighbour[0])
                 heappush(Q, (neighbour[0], l))
+        min_dist = float('+inf')
+        for i in range(n):
+            if i not in visited and d[i] < min_dist:
+                min_dist = d[i]
+                min_v = i
+
         visited.add(current)
-    return d
+    return way
 
 n, m, x, y = map(int, input().split())
 A = [[] for i in range(n)]
@@ -27,8 +37,4 @@ for i in range(m):
     A[v2].append([v1, w])
 
 B = dijkstra(A, x)
-way = [y]
-v = y
-while v != x:
-    if 
 print(B)
