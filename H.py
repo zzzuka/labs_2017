@@ -27,4 +27,8 @@ for i in range(m):
     A[v2].append([v1, w])
 
 B = dijkstra(A, x)
-print(B[y])
+way = [y]
+v = y
+while v != x:
+    if 
+print(B)
