@@ -1,0 +1,41 @@
+import matplotlib.pyplot as plt
+import networkx as nx
+
+#считывание графа
+G = nx.Graph()
+f = open('/home/student/c.txt', 'r')
+v = []
+for line in f:
+    v1, v2, w = list(line.split())
+    if v1 not in v:
+        v.append(v1)
+    if v2 not in v:
+        v.append(v2)
+    G.add_edge(v1, v2, weight=int(w))
+f.close()
+pos = nx.spring_layout(G)
+nx.draw_networkx_nodes(G, pos, node_color='r', node_size=100, alpha=0.8)
+nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
+nx.draw_networkx_labels(G,pos,font_size=12,font_family='sans-serif')
+
+#остовное дерево BFS
+def bfs(graph, start, visited = None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    nx.draw_networkx_nodes(G, pos, nodelist=visited, node_color='g', node_size=100, alpha=0.8)
+    queue = [start]
+    while queue:
+        v = queue.pop(0)
+        for neighbour in graph[v]:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                nx.draw_networkx_nodes(G, pos, nodelist=visited, node_color='g',node_size=100, alpha=0.8)
+                nx.draw_networkx_edges(G, pos, edgelist=[(v,neighbour)], width=1, alpha=1, edge_color='g')
+                queue.append(neighbour)
+
+bfs(G, v[0])
+
+plt.axis('off')
+plt.savefig("simple_path.png") # сохранить как png файл
+plt.show() # вывести на экран
