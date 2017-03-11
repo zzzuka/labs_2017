@@ -3,7 +3,7 @@ import networkx as nx
 
 #считывание графа
 G = nx.Graph()
-f = open('/home/student/c.txt', 'r')
+f = open('/Users/Zuka/PycharmProjects/labs_2017/lab5/с', 'r')
 v = []
 for line in f:
     v1, v2, w = list(line.split())
@@ -16,7 +16,7 @@ f.close()
 pos = nx.spring_layout(G)
 nx.draw_networkx_nodes(G, pos, node_color='r', node_size=100, alpha=0.8)
 nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
-nx.draw_networkx_labels(G,pos,font_size=12,font_family='sans-serif')
+nx.draw_networkx_labels(G,pos,font_size=12,font_family='Comic Sans MS')
 
 #остовное дерево BFS
 def bfs(graph, start, visited = None):
