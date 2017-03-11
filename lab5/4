@@ -4,7 +4,7 @@ import networkx as nx
 
 #считывание графа
 G = nx.Graph()
-f = open('/home/student/c.txt', 'r')
+f = open('/Users/Zuka/PycharmProjects/labs_2017/lab5/с', 'r')
 v = []
 for line in f:
     v1, v2, w = list(line.split())
@@ -17,9 +17,9 @@ f.close()
 pos = nx.spring_layout(G)
 nx.draw_networkx_nodes(G, pos, node_color='r', node_size=100, alpha=0.8)
 nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
-nx.draw_networkx_labels(G,pos,font_size=12,font_family='sans-serif')
+nx.draw_networkx_labels(G,pos,font_size=12,font_family='Comic Sans MS')
 
-def dijkstra(A, start):
+"""def dijkstra(A, start):
     d = [float('+inf') for i in A]
     d[start] = 0
     Q = [(start, 0)]
@@ -35,5 +35,15 @@ def dijkstra(A, start):
                 heappush(Q, (neighbour[0], l))
         visited.add(current)
     return d
+"""
 
-print(nx.single_source_dijkstra_path_length(G,v[0]))
+#вводить названия вершин, не номера
+v1 = input()
+nx.draw_networkx_nodes(G, pos, nodelist=[v1], node_color='g', node_size=100, alpha=0.8)
+d = nx.single_source_dijkstra_path_length(G,v1)
+nx.draw_networkx_labels(G,pos,d,font_size=16,font_color='r',font_family='Comic Sans MS')
+
+
+plt.axis('off')
+plt.savefig("simple_path.png") # сохранить как png файл
+plt.show() # вывести на экран
