@@ -1,6 +1,7 @@
 __author__ = 'student'
 import matplotlib.pyplot as plt
 import networkx as nx
+import random
 
 #считывание графа
 G = nx.Graph()
@@ -20,9 +21,13 @@ nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
 nx.draw_networkx_labels(G,pos,font_size=12,font_family='Comic Sans MS')
 
 d = nx.connected_components(G)
-print(d)
+c = [ 'b', 'g', 'c', 'm', 'y' ]
+for i in d:
+    color = random.choice(c)
+    nx.draw_networkx_nodes(G, pos, nodelist=i, node_color=color, node_size=100, alpha=0.8)
+    #for j in range(0, len(i)-1):
+    #     nx.draw_networkx_edges(G, pos, edgelist=[(i[j], i[j+1])], width=1, alpha=1, edge_color='g')
 
 plt.axis('off')
 plt.savefig("simple_path.png") # сохранить как png файл
 plt.show() # вывести на экран
-
