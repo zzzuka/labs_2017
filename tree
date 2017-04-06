@@ -1,0 +1,89 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+        self.height = 1
+        self.parent = None
+
+class Tree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, current, new):
+        if current.data == new.data:
+            return
+        cd, nd = current.data, new.data
+        if cd > nd:
+            if current.left is None:
+                current.left = new
+                new.parent = current
+                self._h(current)
+                return
+            next = current.left
+        else:
+            next = current.right
+            if current.right is None:
+                current.right = new
+                new.parent = current
+                self._h(current)
+                return
+        self.insert(next, new)
+
+
+    def add(self, data):
+        if self.root is None:
+            self.root = Node(data)
+        else:
+            self.insert(self.root, Node(data))
+
+    def print(self, root = "1"):
+        if root == "1":
+            root = self.root
+        if root is None:
+            return
+        if root.left is not None:
+            self.print(root.left)
+        print(root.data, end=" ")
+        if root.right is not None:
+            self.print(root.right)
+
+    def _h(self, node):
+        hl, hr = 0, 0
+        if node.left is not None:
+            hl = node.left.height
+        if node.right is not None:
+            hr = node.right.height
+        node.height = max(hl, hr) + 1
+        if node.parent is not None:
+            self._h(node.parent)
+
+    def listja(self, root = "1"):
+        if root == "1":
+            root = self.root
+        if root is None:
+            return
+        if root.left is None and root.right is None:
+            res.append(root)
+        if root.left is not None:
+            self.listja(root.left)
+        if root.right is not None:
+            self.listja(root.right)
+        return res
+
+    def is_balanced(self, res):
+        for x in res:
+            if x.parent.left is None or x.parent.right is None:
+                if x.parent.parent.left is None or x.parent.parent.right is None:
+                    print('NO')
+                    return
+        print('YES')
+        return
+
+
+tree = Tree()
+line = list(map(int, input().split()))
+for x in line:
+    tree.add(x)
+res = []
+tree.is_balanced(res)
