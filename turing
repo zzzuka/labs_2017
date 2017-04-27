@@ -1,0 +1,128 @@
+__author__ = 'student'
+class Tape:
+    def __init__(self, tape_string=' ', blank_symbol='_'):
+        self.b = blank_symbol
+        self.__tape = dict(enumerate(tape_string))
+
+    def __getitem__(self, index):
+        if index in self.__tape.keys():
+            return self.__tape[index]
+        else:
+            return self.b
+
+    def __setitem__(self, index, char):
+        self.__tape[index] = char
+
+    def __str__(self):
+        x = ''
+        for i in range(max(self.__tape.keys()) + 1):
+            if i in self.__tape.keys():
+                x += self.__getitem__(i)
+            else:
+                x += self.b
+        return x
+
+
+
+"""tape = Tape('1001')
+print(tape[0])
+print(tape[1])
+print(tape)
+
+tape[6] = '0'
+print(tape)
+
+tape[0] = '0'
+print(tape[0])
+
+print(tape[100])"""
+
+
+class TuringMachine:
+    def __init__(self, tape, initial_state, final_states, b = '_', d_function = None):
+        self.__tape = Tape(tape, b)
+        self.__head_position = int()
+        self.__current_state = initial_state
+        self.__d_function = d_function
+        self.__final_states = final_states
+
+    def step(self):
+        x = self.__d_function[self.__current_state, self.__tape[self.__head_position]]
+        self.__current_state = x[0]
+        self.__tape[self.__head_position] = x[1]
+        if x[2] == 'R':
+            self.__head_position += 1
+        elif x[2] == 'L':
+            self.__head_position -= 1
+
+
+    def is_final(self):
+        if self.__current_state in self.__final_states:
+            return True
+        else:
+            return False
+
+    def get_tape(self):
+        return self.__tape
+
+
+d_function_1 = {('q_0', '0') : ('q_0', '0', 'R'),
+              ('q_0', '1') : ('q_0', '1', 'R'),
+              ('q_0', '_') : ('q_f', '0', 'N')}
+machine = TuringMachine(tape = '1001', initial_state = 'q_0',
+                        final_states = set(['q_f']), d_function = d_function_1,)
+while not machine.is_final():
+    machine.step()
+print(machine.get_tape())
+
+d_function_2 = {('q_0', 'a') : ('q_1', '_', 'R'),
+              ('q_0', 'b') : ('q_2', '_', 'R'),
+              ('q_0', 'c') : ('q_3', '_', 'R'),
+              ('q_0', 'd') : ('q_4', '_', 'R'),
+              ('q_0', '_') : ('q_f', '_', 'N'),
+              ('q_1', 'a') : ('q_1', 'a', 'R'),
+              ('q_1', 'b') : ('q_1', 'b', 'R'),
+              ('q_1', 'c') : ('q_1', 'c', 'R'),
+              ('q_1', 'd') : ('q_1', 'd', 'R'),
+              ('q_1', '_') : ('q_f', 'a', 'N'),
+              ('q_2', 'a') : ('q_2', 'a', 'R'),
+              ('q_2', 'b') : ('q_2', 'b', 'R'),
+              ('q_2', 'c') : ('q_2', 'c', 'R'),
+              ('q_2', 'd') : ('q_2', 'd', 'R'),
+              ('q_2', '_') : ('q_f', 'b', 'N'),
+                ('q_3', 'a') : ('q_3', 'a', 'R'),
+              ('q_3', 'b') : ('q_3', 'b', 'R'),
+              ('q_3', 'c') : ('q_3', 'c', 'R'),
+              ('q_3', 'd') : ('q_3', 'd', 'R'),
+              ('q_3', '_') : ('q_f', 'c', 'N'),
+                ('q_4', 'a') : ('q_4', 'a', 'R'),
+              ('q_4', 'b') : ('q_4', 'b', 'R'),
+              ('q_4', 'c') : ('q_4', 'c', 'R'),
+              ('q_4', 'd') : ('q_4', 'd', 'R'),
+              ('q_4', '_') : ('q_f', 'f', 'N')}
+
+machine = TuringMachine(tape = 'bacd', initial_state = 'q_0',
+                        final_states = set(['q_f']), d_function = d_function_2,)
+while not machine.is_final():
+    machine.step()
+print(machine.get_tape())
+
+d_function_3 = {('q_0', 'a') : ('q_1', 'a', 'R'),
+              ('q_0', 'b') : ('q_2', 'b', 'R'),
+              ('q_0', '_') : ('q_f', '_', 'N'),
+
+              ('q_1', 'a') : ('q_1', 'a', 'R'),
+              ('q_1', 'b') : ('q_1', 'b', 'R'),
+              ('q_1', '_') : ('q_3', '_', 'L'),
+
+              ('q_2', 'a') : ('q_2', 'a', 'R'),
+              ('q_2', 'b') : ('q_2', 'b', 'R'),
+              ('q_2', '_') : ('q_4', '_', 'L'),
+
+                ('q_3', 'a') : ('q_3', 'a', 'R'),
+              ('q_3', 'b') : ('q_3', 'b', 'R'),
+              ('q_3', '_') : ('q_f', 'c', 'N'),
+
+                ('q_4', 'a') : ('q_4', 'a', 'R'),
+              ('q_4', 'b') : ('q_4', 'b', 'R'),
+              ('q_4', '_') : ('q_f', 'f', 'N')}
